@@ -33,7 +33,7 @@ clean_out=$outdir/clean
 bowtie2_out=$outdir/bowtie2
 #adapter_forward
 adp1=GATCGGAAGAGCACACGTCT
-#adapter reverse
+#adapter_reverse
 adp2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT
 # min quality of seq
 quality=20 
