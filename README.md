@@ -1,4 +1,4 @@
-# SRA_Pipe
+# SRA_Tools
 Convert SRA data to BAM/Bigwig/bed by one step in parallel computation
 #:::dependents:::
 
@@ -31,7 +31,9 @@ fq_out=$outdir/fq
 clean_out=$outdir/clean
 #bowtie2 output dir
 bowtie2_out=$outdir/bowtie2
+#adapter_forward
 adp1=GATCGGAAGAGCACACGTCT
+#adapter reverse
 adp2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT
 # min quality of seq
 quality=20 
