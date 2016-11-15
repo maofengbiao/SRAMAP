@@ -73,7 +73,7 @@ makedir() {
            echo $'\t'Done Making with $1
          }
          export -f makedir
-#@parallel -j $parallel makedir ::: $outdir $sra_out $fq_out $bowtie2_out $clean_out # make output dir
+parallel -j $parallel makedir ::: $outdir $sra_out $fq_out $bowtie2_out $clean_out # make output dir
 
 # 1. wget sra from GEO
 echo "...Wgeting SRA data from GEO(SRA) ftp...";
@@ -85,7 +85,7 @@ wgetsra() {
            echo $'\t'Done wgetting with $1
          }
          export -f wgetsra
-#@parallel -j $parallel wgetsra ::::  $srrlist ::: $sraftpdir   # wget sra data from GEO
+parallel -j $parallel wgetsra ::::  $srrlist ::: $sraftpdir   # wget sra data from GEO
 
 # 2. Converting data from sra format to fastq format
 echo "...Converting data from sra format to fastq format...";
@@ -96,7 +96,7 @@ fastqdump() {
            echo $'\t'Done sra2fq with $1
          }
          export -f fastqdump
-#@parallel -j $parallel  fastqdump :::: $srrlist ::: $sra_out
+parallel -j $parallel  fastqdump :::: $srrlist ::: $sra_out
 
 echo "...remove sra files...";
 rm $sra_out/*.sra  # remove sra files
