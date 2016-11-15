@@ -1,5 +1,5 @@
 # SRA_Tools
-Convert SRA data to BAM/Bigwig/bed by one step in parallel computation
+Convert SRA data to BAM/SAM/Bigwig/Bed by one step in parallel computation
 #:::dependents:::
 
 #1. please install samtools and deeptools !!!!!!!!
