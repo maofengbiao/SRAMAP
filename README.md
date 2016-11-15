@@ -4,7 +4,9 @@ Convert SRA data to BAM/Bigwig/bed by one step in parallel computation
 
 #1. pleas install samtools and deeptools !!!!!!!!
 #2. pleas install trim_galore and bowtie2 !!!!!!!
-#3. basic shell knowlege !!!!!!!
+#3. pleas install GNU Parallel !!!!!!!
+#4. basic shell knowlege !!!!!!!
+
 
 #:::parameters setting:::
 #srrlist deposit directory
@@ -39,6 +41,8 @@ phred=33
 parallel=10 
 #mapping quality
 mapQ=30
-#for bam2bigwig
+##Parameters for bam2bigwig
+#binSize
 binSize=50
+#extend base
 extend=200
