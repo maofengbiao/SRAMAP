@@ -7,9 +7,11 @@
 
 #:::dependents:::
 
-#1. pleas install samtools and deeptools !!!!!!!!
-#2. pleas install trim_galore and bowtie2 !!!!!!!
-#3. basic shell knowlege !!!!!!!
+#1. please install samtools and deeptools !!!!!!!!
+#2. please install trim_galore and bowtie2 !!!!!!!
+#3. please install GNU Parallel !!!!!!!
+#4. basic shell knowlege !!!!!!!
+
 
 #:::parameters setting:::
 
