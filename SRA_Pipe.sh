@@ -1,0 +1,196 @@
+#######################################################################################################
+
+#.......Convert GEO SRA to bam/bigwig/sam/bed...........
+#---------By Fengbiao Mao (fmao@umich.edu)-----------
+
+#######################################################################################################
+
+#:::dependents:::
+
+#1. pleas install samtools and deeptools !!!!!!!!
+#2. pleas install trim_galore and bowtie2 !!!!!!!
+#3. basic shell knowlege !!!!!!!
+
+#:::parameters setting:::
+
+rootdir=/data/fmao/zhanghui/Xiaoyu_liu #srrlist deposit directory
+srrlist=$rootdir/srr.1.list #SRR name list
+sraftpdir=ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByStudy/sra/SRP/SRP064/SRP064741 # SRR deposit ftp site
+samplist=$srrlist #sample list
+specie=mouse #spacies
+dbver=mm10 #db version
+refindex=/data/fmao/db/$specie/$dbver/Bowtie2Index/genome #db ref index
+
+outdir=/data/fmao/zhanghui/Xiaoyu_liu/chip_seq_mao #output dir
+sra_out=$outdir/sra #sra output dir
+fq_out=$outdir/fq #fq output dir
+clean_out=$outdir/clean #clean output dir
+bowtie2_out=$outdir/bowtie2 #bowtie2 output dir
+adp1=GATCGGAAGAGCACACGTCT
+adp2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT
+quality=20 # min quality of seq
+phred=33 #phred value (33/64)
+parallel=10 #parallel number
+mapQ=30 #mapping quality
+
+#for bam2bigwig
+binSize=50
+extend=200
+echo
+echo "Parameters"
+echo
+echo "rootdir       -->        $rootdir"
+echo "srrlist       -->        $srrlist"
+echo "sraftpdir     -->        $sraftpdir"
+echo "samplist      -->        $samplist"
+echo "specie        -->        $specie"
+echo "dbver         -->        $dbver"
+echo "refindex      -->        $refindex"
+echo "outdir        -->        $outdir"
+echo "sra_out       -->        $sra_out"
+echo "fq_out        -->        $fq_out"
+echo "clean_out     -->        $clean_out"
+echo "bowtie2_out   -->        $bowtie2_out"
+echo "adapter1      -->        $adp1"
+echo "adapter2      -->        $adp2"
+echo "quality       -->        $quality"
+echo "phred         -->        $phred"
+echo "parallel      -->        $parallel"
+echo "mapQ          -->        $mapQ"
+echo "......"
+echo "#parameters for bam2bigwig"
+echo "binSize       -->        $binSize"
+echo "extend        -->        $extend"
+echo "......"
+#######################################################################################################
+# Begin Running ...
+#######################################################################################################
+echo "...Program Begin Running...";
+echo "...Making output directory...";
+makedir() {
+           echo $'\t'Making dir for $1
+           mkdir -p $1
+           echo $'\t'Done Making with $1
+         }
+         export -f makedir
+#@parallel -j $parallel makedir ::: $outdir $sra_out $fq_out $bowtie2_out $clean_out # make output dir
+
+# 1. wget sra from GEO
+echo "...Wgeting SRA data from GEO(SRA) ftp...";
+
+cd $sra_out
+wgetsra() {
+           echo $'\t'wgetting sra for $1
+           wget -c $2/$1/$1.sra -o $1.log
+           echo $'\t'Done wgetting with $1
+         }
+         export -f wgetsra
+#@parallel -j $parallel wgetsra ::::  $srrlist ::: $sraftpdir   # wget sra data from GEO
+
+# 2. Converting data from sra format to fastq format
+echo "...Converting data from sra format to fastq format...";
+cd $fq_out
+fastqdump() {
+           echo $'\t'fastqdump to fastq for $1
+           fastq-dump $2/$1.sra --split-3 >& $1.sra2fq.log
+           echo $'\t'Done sra2fq with $1
+         }
+         export -f fastqdump
+#@parallel -j $parallel  fastqdump :::: $srrlist ::: $sra_out
+
+echo "...remove sra files...";
+#@rm $sra_out/*.sra  # remove sra files
+# 3. Remove adaptors and clean reads.
+echo "...Remove adaptors and clean reads...";
+cd $outdir
+ls $fq_out/*_1.fastq |awk -F "[/_]"  '{print $(NF-1)}' >  PE.sample.list
+ls $fq_out/*.fastq | grep -v "_1.fastq" | grep -v "_2.fastq" | awk -F "[./]"  '{print $(NF-1)}' > SE.sample.list
+cleanPE (){
+           echo $'\t'trim_galore fastq for $1
+           mkdir -p $1;
+           trim_galore  --length 20  --adapter  $3 --adapter2 $4 --fastqc  --phred$5 --quality $6 --gzip --output_dir $1/ $2/${1}_1.fastq $2/${1}_2.fastq  --paired   >& $1/$1.trim.log
+           echo $'\t'Done trim_galore with $1
+        }
+        export -f cleanPE
+
+cleanSE (){
+           echo $'\t'trim_galore fastq for $1
+           mkdir -p $1;
+           trim_galore   --length 20  --adapter $3 --fastqc  --phred$4 --quality $5 --gzip --output_dir  $1/ $2/$1.fastq >& $1/$1.trim.log
+           echo $'\t'Done trim_galore with $1
+        }
+        export -f cleanSE
+cd $clean_out;
+if [ -s $outdir/PE.sample.list ];then
+        echo $'\t'...cleaning PE samples...
+        parallel -j $parallel cleanPE :::: $outdir/PE.sample.list ::: ${fq_out} ::: ${adp1} ::: ${adp2} ::: $phred ::: ${quality}
+fi
+
+if [ -s $outdir/SE.sample.list ];then
+        echo $'\t'...cleaning SE samples...
+        parallel -j $parallel cleanSE :::: $outdir/SE.sample.list ::: ${fq_out} ::: ${adp1} ::: $phred ::: ${quality}
+fi
+
+#@rm $fq_out/*.fastq
+# 4. Mapping paired-end reads to the reference sequence
+
+cd $bowtie2_out;
+echo "...Mapping paired-end reads to the reference sequence..."
+
+
+bowtie2PE (){
+           echo $'\t'bowtie2PE to SAM for $1
+           mkdir -p $5/$1;
+           cd $5/$1;
+           bowtie2 -x $3  -1 $2/$1/${1}_1_val_1.fq.gz -2 $2/$1/${1}_2_val_2.fq.gz -q --phred$4  --very-sensitive -p 10  -S bowtie2.${1}.sam >& ${1}.mapping.xls
+           echo $'\t'Done bowtie2PE with $1
+        }
+        export -f bowtie2PE
+
+bowtie2SE (){
+           echo $'\t'bowtie2SE to SAM for $1
+           mkdir -p $5/$1;
+           cd $5/$1;
+           bowtie2 -x $3 -U ${2}/${1}/${1}_trimmed.fq.gz -q --phred$4  --very-sensitive -p 8  -S bowtie2.${1}.sam >& ${1}.mapping.xls
+           echo $'\t'Done bowtie2SE with $1
+        }
+        export -f bowtie2SE
+if [ -s $outdir/PE.sample.list ];then
+         echo $'\t'...mapping PE samples...
+         parallel -j $parallel bowtie2PE :::: $outdir/PE.sample.list ::: $clean_out ::: $refindex ::: ${phred} ::: $bowtie2_out
+fi
+
+if [ -s $outdir/SE.sample.list ];then
+        echo $'\t'...mapping SE samples...
+        parallel -j $parallel bowtie2SE :::: $outdir/SE.sample.list ::: $clean_out ::: $refindex ::: ${phred} ::: $bowtie2_out
+fi
+
+#@ -rf $clean_out/*.fq.gz
+
+# 5. Removing PCR duplicates from the bam file
+cd  $bowtie2_out
+echo "...Sort,Index and Transform SAM/BAM to different format (bigwig/bed)..."
+bamdeal() {
+           echo $'\t'Sort,Index and Transform SAM/BAM to different format for $1
+           cd $2/$1
+           samtools view -S -q $3 -b bowtie2.$1.sam > bowtie2.$1.bam
+           samtools sort bowtie2.$1.bam -o  bowtie2.$1.srt.bam
+           samtools index bowtie2.$1.srt.bam
+           samtools rmdup bowtie2.$1.srt.bam bowtie2.$1.rmdup.bam
+           samtools index bowtie2.$1.rmdup.bam
+           bedtools bamtobed -i bowtie2.$1.rmdup.bam > $1.bed
+           bamCoverage --bam bowtie2.$1.rmdup.bam --outFileName $1.bigwig --outFileFormat bigwig  --extendReads  $4  --ignoreDuplicates  --normalizeUsingRPKM --minMappingQuality $3  --binSize $5
+           bam2bedgraph  bowtie2.$1.rmdup.bam > bowtie2.$1.rmdup.bigwig
+           samtools view -Sb bowtie2.$1.sam > bowtie2.$1.0.bam
+           samtools sort bowtie2.$1.0.bam -o bowtie2.$1.0.srt.bam
+           samtools index bowtie2.$1.0.srt.bam
+
+           echo $'\t'Done Sort,Index and Transform SAM/BAM to different format for $1
+         }
+export -f bamdeal
+parallel -j  $parallel  bamdeal  :::: $srrlist ::: $bowtie2_out ::: $mapQ ::: $extend   ::: $binSize
+
+echo ...Program Finished...
+echo "!!!  Cheers  !!!"
+
+
