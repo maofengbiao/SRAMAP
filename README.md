@@ -2,9 +2,9 @@
 Convert SRA data to BAM/Bigwig/bed by one step in parallel computation
 #:::dependents:::
 
-#1. pleas install samtools and deeptools !!!!!!!!
-#2. pleas install trim_galore and bowtie2 !!!!!!!
-#3. pleas install GNU Parallel !!!!!!!
+#1. please install samtools and deeptools !!!!!!!!
+#2. please install trim_galore and bowtie2 !!!!!!!
+#3. please install GNU Parallel !!!!!!!
 #4. basic shell knowlege !!!!!!!
 
 
