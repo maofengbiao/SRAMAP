@@ -4,7 +4,7 @@ Convert SRA data to BAM/SAM/Bigwig/Bed by one step in parallel computation
 
 #1. please install samtools and deeptools !!!!!!!!
 #2. please install trim_galore and bowtie2 !!!!!!!
-#3. please install GNU Parallel !!!!!!!
+#3. please install fastq-dump and GNU Parallel !!!!!!!
 #4. basic shell knowlege !!!!!!!
 
 
