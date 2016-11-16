@@ -1,4 +1,4 @@
-# SRA_Tools
+# SRAtools
 Convert SRA data to mapped BAM/SAM/Bigwig/Bed by one step in parallel computation
 #:::dependents:::
 
