@@ -167,7 +167,7 @@ if [ -s $outdir/SE.sample.list ];then
         parallel -j $parallel bowtie2SE :::: $outdir/SE.sample.list ::: $clean_out ::: $refindex ::: ${phred} ::: $bowtie2_out
 fi
 
-#@rm -rf $clean_out/*/*.fq.gz
+##rm -rf $clean_out/*/*.fq.gz
 
 # 5. Removing PCR duplicates from the bam file
 cd  $bowtie2_out
