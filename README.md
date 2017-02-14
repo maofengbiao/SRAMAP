@@ -36,7 +36,7 @@ $ ./SRAtools -h
 
 -o output directory
 
--w SRR web site
+-w web site of SRR
 
 -g genome reference indexed by bowtie2
 
