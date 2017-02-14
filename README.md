@@ -1,4 +1,4 @@
-# SRAtools
+# SRAMAP
 Convert SRA data to mapped BAM/SAM/Bigwig/Bed by one step in parallel computation
 #:::Install Dependencies:::
 
@@ -26,11 +26,11 @@ $ wget http://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/current/sratoolkit.current-cent
 $ tar zxvf sratoolkit.current-centos_linux64.tar.gz
 
 #4. basic shell knowlege !!!!!!!
-$ export PATH=$PATH:/path/to/sratoolkit.x.x.x-centos_linux64/bin:/path/to/SRAtools
+$ export PATH=$PATH:/path/to/sratoolkit.x.x.x-centos_linux64/bin:/path/to/SRAMAP
 
-#:::SRAtools Usage:::
+#:::SRAMAP Usage:::
 
-$ ./SRAtools -h
+$ ./SRAMAP -h
 
 -i input SRR list file
 
@@ -57,8 +57,8 @@ $ ./SRAtools -h
 -e extend bases for reads for bam2bigwig [200]
 
 -h the helpinformation
-#:::SRAtools Example:::
-$ /path/to/SRAtools \
+#:::SRAMAP Example:::
+$ /path/to/SRAMAP \
 
 -i /path/to/srr.list \
 
