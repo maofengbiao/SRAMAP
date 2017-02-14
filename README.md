@@ -1,6 +1,8 @@
 # SRAMAP
 Convert SRA data to mapped BAM/SAM/Bigwig/Bed by one step in parallel computation
 
+$ git clone  https://github.com/maofengbiao/SRAMAP.git
+
 $ chmod 750 bam2bedgraph
 
 $ chmod 750 SRAMAP
