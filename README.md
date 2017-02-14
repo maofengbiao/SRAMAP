@@ -28,7 +28,7 @@ $ tar zxvf sratoolkit.current-centos_linux64.tar.gz
 #4. basic shell knowlege !!!!!!!
 $ export PATH=$PATH:/path/to/sratoolkit.x.x.x-centos_linux64/bin:/path/to/SRAtools
 
-#5. SRA Usage !!!!!!!
+#5. SRAtools Usage !!!!!!!
 
 $ ./SRAtools -h
 
