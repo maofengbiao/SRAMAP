@@ -1,9 +1,9 @@
 # SRAMAP
 Convert SRA data to mapped BAM/SAM/Bigwig/Bed by one step in parallel computation
 
-$ chmod 770 bam2bedgraph
+$ chmod 750 bam2bedgraph
 
-$ chmod 770 SRAMAP
+$ chmod 750 SRAMAP
 
 #:::Install Dependencies:::
 
