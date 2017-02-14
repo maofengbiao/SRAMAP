@@ -15,33 +15,84 @@
 
 #:::parameters setting:::
 
-rootdir=/data/fmao/zhanghui/Xiaoyu_liu #srrlist deposit directory
-srrlist=$rootdir/srr.1.list #SRR name list
-sraftpdir=ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByStudy/sra/SRP/SRP064/SRP064741 # SRR deposit ftp site
-samplist=$srrlist #sample list
-specie=mouse #spacies
-dbver=mm10 #db version
-refindex=/data/fmao/db/$specie/$dbver/Bowtie2Index/genome #db ref index
+srrlist="" #SRR name list
+sraftpdir="" # SRR deposit ftp site
+refindex="" #db ref index
+outdir="" #output dir
 
-outdir=/data/fmao/zhanghui/Xiaoyu_liu/chip_seq_mao #output dir
-sra_out=$outdir/sra #sra output dir
-fq_out=$outdir/fq #fq output dir
-clean_out=$outdir/clean #clean output dir
-bowtie2_out=$outdir/bowtie2 #bowtie2 output dir
-adp1=GATCGGAAGAGCACACGTCT
-adp2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT
+adp1="GATCGGAAGAGCACACGTCT"
+adp2="AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT";
 quality=20 # min quality of seq
 phred=33 #phred value (33/64)
 parallel=10 #parallel number
 mapQ=30 #mapping quality
-
 #for bam2bigwig
 binSize=50
 extend=200
+
+helps=" 
+Usage : $0 
+-i input SRR list file
+-o output directory 
+-w SRR web site
+-g genome reference indexed by bowtie2
+-a adapter 1 [GATCGGAAGAGCACACGTCT]
+-b adapter 2 [AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT]
+-q quality of trimming [20]
+-p phred system value [33]
+-t process number [10]
+-m mapQ required [30]
+-s size of bin for generating wig [50]
+-e extend bases for reads for bam2bigwig [200]
+-h the helpinformation 
+" 
+ 
+while getopts i:o:w:g:a:b:q:p:t:m:s:e:h opt 
+do 
+case $opt in 
+i) srrlist=$OPTARG 
+;; 
+o) outdir=$OPTARG 
+;; 
+w) sraftpdir=$OPTARG 
+;; 
+g) refindex=$OPTARG 
+;; 
+a) adp1=$OPTARG 
+;; 
+b) adp2=$OPTARG 
+;; 
+q) quality=$OPTARG 
+;; 
+p) phred=$OPTARG 
+;; 
+t) parallel=$OPTARG 
+;; 
+m) mapQ=$OPTARG 
+;; 
+s) binSize=$OPTARG 
+;; 
+e) extend=$OPTARG
+;;
+h) help=ture 
+esac 
+done 
+ 
+if [ -z $outdir ] || [ -z $srrlist ] || [ $help ] || [ -z $sraftpdir ] || [ -z $refindex ] 
+then 
+echo "$helps"; 
+exit 
+fi
+
+samplist=$srrlist #sample list
+sra_out=$outdir/sra #sra output dir
+fq_out=$outdir/fq #fq output dir
+clean_out=$outdir/clean #clean output dir
+bowtie2_out=$outdir/bowtie2 #bowtie2 output dir
+#start 
 echo
 echo "Parameters"
 echo
-echo "rootdir       -->        $rootdir"
 echo "srrlist       -->        $srrlist"
 echo "sraftpdir     -->        $sraftpdir"
 echo "samplist      -->        $samplist"
