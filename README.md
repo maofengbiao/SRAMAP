@@ -2,11 +2,24 @@
 Convert SRA data to mapped BAM/SAM/Bigwig/Bed by one step in parallel computation
 #:::dependents:::
 
-#1. please install samtools and deeptools !!!!!!!!
-#2. please install trim_galore and bowtie2 !!!!!!!
-#3. please install fastq-dump and GNU Parallel !!!!!!!
-#4. basic shell knowlege !!!!!!!
+#1. please install trim_galore and bowtie2 !!!!!!!
+$ wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh
+$ bash Miniconda3-latest-Linux-x86_64.sh
+$ conda install -c bioconda trim-galore=0.4.1
+$ conda install bowtie2
 
+#2. please install bedtools, samtools and deeptools !!!!!!!!
+$ conda install -c bioconda bedtools=2.26.0
+$ conda install -c bioconda samtools=1.3.1
+$ conda install -c bioconda deeptools=2.4.2
+
+#3. please install GNU Parallel and fastq-dump (in sratoolkit) !!!!!!!
+$ conda install -c bioconda parallel=20160622
+$ wget http://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/current/sratoolkit.current-centos_linux64.tar.gz
+$ tar zxvf sratoolkit.current-centos_linux64.tar.gz
+
+#4. basic shell knowlege !!!!!!!
+$ export PATH=$PATH:/path/to/sratoolkit.x.x.x-centos_linux64/bin:/path/to/SRAtools
 
 #:::parameters setting:::
 #srrlist deposit directory
