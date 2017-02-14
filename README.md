@@ -1,5 +1,10 @@
 # SRAMAP
 Convert SRA data to mapped BAM/SAM/Bigwig/Bed by one step in parallel computation
+
+$ chmod 770 bam2bedgraph
+
+$ SRAMAP
+
 #:::Install Dependencies:::
 
 #1. please install trim_galore and bowtie2 !!!!!!!
