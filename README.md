@@ -1,6 +1,6 @@
 # SRAtools
 Convert SRA data to mapped BAM/SAM/Bigwig/Bed by one step in parallel computation
-#:::dependents:::
+#:::dependencies:::
 
 #1. please install trim_galore and bowtie2 !!!!!!!
 $ wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh
