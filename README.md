@@ -29,17 +29,30 @@ $ tar zxvf sratoolkit.current-centos_linux64.tar.gz
 $ export PATH=$PATH:/path/to/sratoolkit.x.x.x-centos_linux64/bin:/path/to/SRAtools
 
 Usage : ./SRAtools
+
 -i input SRR list file
+
 -o output directory
+
 -w SRR web site
+
 -g genome reference indexed by bowtie2
+
 -a adapter 1 [GATCGGAAGAGCACACGTCT]
+
 -b adapter 2 [AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT]
+
 -q quality of trimming [20]
+
 -p phred system value [33]
+
 -t process number [10]
+
 -m mapQ required [30]
+
 -s size of bin for generating wig [50]
+
 -e extend bases for reads for bam2bigwig [200]
+
 -h the helpinformation
 
