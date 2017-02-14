@@ -34,7 +34,7 @@ helps="
 Usage : $0 
 -i input SRR list file
 -o output directory 
--w SRR web site
+-w web site of SRR
 -g genome reference indexed by bowtie2
 -a adapter 1 [GATCGGAAGAGCACACGTCT]
 -b adapter 2 [AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT]
