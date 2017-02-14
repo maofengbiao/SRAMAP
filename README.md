@@ -28,43 +28,18 @@ $ tar zxvf sratoolkit.current-centos_linux64.tar.gz
 #4. basic shell knowlege !!!!!!!
 $ export PATH=$PATH:/path/to/sratoolkit.x.x.x-centos_linux64/bin:/path/to/SRAtools
 
-#:::parameters setting:::
-#srrlist deposit directory
-rootdir= 
-#SRR name list
-srrlist=$rootdir/srr.list 
-# SRR deposit ftp site
-sraftpdir= 
-#spacies
-specie=mouse #spacies
-#db version
-dbver=mm10
-#db ref index by bowtie2
-refindex=/data/fmao/db/$specie/$dbver/Bowtie2Index/genome 
-#output dir
-outdir= 
-#sra output dir
-sra_out=$outdir/sra 
-#fq output dir
-fq_out=$outdir/fq 
-#clean output dir
-clean_out=$outdir/clean
-#bowtie2 output dir
-bowtie2_out=$outdir/bowtie2
-#adapter_forward
-adp1=GATCGGAAGAGCACACGTCT
-#adapter_reverse
-adp2=AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT
-# min quality of seq
-quality=20 
-#phred value (33/64)
-phred=33 
-#parallel number
-parallel=10 
-#mapping quality
-mapQ=30
-##Parameters for bam2bigwig
-#binSize
-binSize=50
-#extend base
-extend=200
+Usage : ./SRAtools
+-i input SRR list file
+-o output directory
+-w SRR web site
+-g genome reference indexed by bowtie2
+-a adapter 1 [GATCGGAAGAGCACACGTCT]
+-b adapter 2 [AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT]
+-q quality of trimming [20]
+-p phred system value [33]
+-t process number [10]
+-m mapQ required [30]
+-s size of bin for generating wig [50]
+-e extend bases for reads for bam2bigwig [200]
+-h the helpinformation
+
