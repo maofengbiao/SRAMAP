@@ -30,7 +30,7 @@ $ export PATH=$PATH:/path/to/sratoolkit.x.x.x-centos_linux64/bin:/path/to/SRAtoo
 
 #5. SRA Usage !!!!!!!
 
-Usage : ./SRAtools
+$ ./SRAtools
 
 -i input SRR list file
 
