@@ -1,6 +1,6 @@
 # SRAtools
 Convert SRA data to mapped BAM/SAM/Bigwig/Bed by one step in parallel computation
-#:::dependencies:::
+#:::Install Dependencies:::
 
 #1. please install trim_galore and bowtie2 !!!!!!!
 $ wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh
@@ -57,4 +57,22 @@ $ ./SRAtools -h
 -e extend bases for reads for bam2bigwig [200]
 
 -h the helpinformation
+#:::SRAtools Example:::
+$ /path/to/SRAtools \
+-i /path/to/srr.list \
+-o /path/to/Wdr5_GSE22934 \
+-w ftp://ftp-trace.ncbi.nlm.nih.gov/sra/sra-instant/reads/ByStudy/sra/SRP/SRP002/SRP002862 \
+-g /path/to/db/mm10/Sequence/Bowtie2Index/genome \
+-a GATCGGAAGAGCACACGTCT \
+-b AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT \
+-q 20 \
+-p 33 \
+-t 1 \
+-m 30 \
+-s 50 \
+-e 200
+$ cat /path/to/srr.list
+SRR060173
+SRR060174
+SRR060175
 
