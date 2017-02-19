@@ -155,13 +155,13 @@ echo "...remove sra files...";
 echo "...Remove adaptors and clean reads...";
 cd $outdir
 
-if [ ls $fq_out/*_1.fastq >/dev/null 2>&1 ];then
+#@if [ ls $fq_out/*_1.fastq >/dev/null 2>&1 ];then
 	ls $fq_out/*_1.fastq |awk -F "[/_]"  '{print $(NF-1)}' >  PE.sample.list
-fi
+#@fi
 
-if [ ls $fq_out/*.fastq >/dev/null 2>&1 ];then
+#@if [ ls $fq_out/*.fastq >/dev/null 2>&1 ];then
 	ls $fq_out/*.fastq | grep -v "_1.fastq" | grep -v "_2.fastq" | awk -F "[./]"  '{print $(NF-1)}' > SE.sample.list
-fi
+#@fi
 
 cleanPE (){
            echo $'\t'trim_galore fastq for $1
