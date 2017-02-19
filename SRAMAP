@@ -150,7 +150,7 @@ fastqdump() {
 parallel -j $parallel  fastqdump :::: $srrlist ::: $sra_out
 
 echo "...remove sra files...";
-rm $sra_out/*.sra  # remove sra files
+#@rm $sra_out/*.sra  # remove sra files
 # 3. Remove adaptors and clean reads.
 echo "...Remove adaptors and clean reads...";
 cd $outdir
@@ -189,7 +189,7 @@ if [ -s $outdir/SE.sample.list ];then
         parallel -j $parallel cleanSE :::: $outdir/SE.sample.list ::: ${fq_out} ::: ${adp1} ::: $phred ::: ${quality}
 fi
 
-rm $fq_out/*.fastq
+#@rm $fq_out/*.fastq
 # 4. Mapping paired-end reads to the reference sequence
 
 cd $bowtie2_out;
